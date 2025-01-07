@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Surprise</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffdde1, #ff5c8d);
+            color: black;
+            text-align: center;
+            position: relative; /* Contain falling hearts */
+        }
+
+        .countdown {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff5c8d;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 50px 0;
+            color: #ff5c8d;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-container img {
+            width: 80%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .notebook {
+            background: #f7e3b5;
+            border: 1px solid #d9b584;
+            border-radius: 10px;
+            margin: 20px auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-family: 'Georgia', serif;
+            font-size: 1.2rem;
+            color: #5e4637;
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 15px;
+            background-color: #ff5c8d;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(255, 92, 141, 0.5);
+        }
+
+        #videoSection {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #videoSection video {
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Falling Hearts Animation */
+        @keyframes fallHeart {
+            0% {
+                opacity: 1;
+                transform: translateY(-100px) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .heart {
+            position: absolute;
+            top: -50px;
+            font-size: 3em;
+            animation: fallHeart 5s infinite linear;
+        }
+
+        /* Creating random positions and animation delays */
+        .heart:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .heart:nth-child(2) {
+            left: 30%;
+            animation-delay: 2s;
+        }
+
+        .heart:nth-child(3) {
+            left: 50%;
+            animation-delay: 1s;
+        }
+
+        .heart:nth-child(4) {
+            left: 70%;
+            animation-delay: 3s;
+        }
+
+        .heart:nth-child(5) {
+            left: 90%;
+            animation-delay: 4s;
+        }
+
+        /* Media query for mobile responsiveness */
+        @media screen and (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+                padding: 10px;
+            }
+
+            p {
+                font-size: 1em;
+                padding: 15px;
+                max-width: 100%;
+            }
+
+            .button {
+                font-size: 0.9em;
+                padding: 12px 20px;
+            }
+
+            .heart {
+                font-size: 2.5em;
+            }
+
+            img {
+                width: 70%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Falling Hearts -->
+    <div class="heart">❤️</div>
+    <div class="heart">❤️</div>
+    <div class="heart">❤️</div>
+    <div class="heart">❤️</div>
+    <div class="heart">❤️</div>
+
+    <div class="countdown" id="countdown"></div>
+
+    <div class="container">
+        <h1>Happy Birthday, My Love!</h1>
+
+        <div class="image-container">
+            <img src="https://imgur.com/e81AZDR.png" alt="Birthday Gift">
+        </div>
+
+        <div class="notebook">
+            <p>Dear Piu,</p>
+            <p>Happy Birthday! 🎉 Today is all about celebrating the amazing person you are.</p>
+            <p>I hope this year brings you as much happiness and love as you bring to everyone around you.</p>
+            <p><strong>With love, Your Special Someone ❤️</strong></p>
+        </div>
+
+        <a href="javascript:void(0);" class="button" id="celebrateBtn">Celebrate With Me</a>
+    </div>
+
+    <div id="videoSection">
+        <h2>Happy Birthday, My Princess 👑</h2>
+        <video controls>
+            <source src="Princess.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <script>
+        const countdownElement = document.getElementById('countdown');
+        const celebrateBtn = document.getElementById('celebrateBtn');
+        const videoSection = document.getElementById('videoSection');
+
+        function updateCountdown() {
+            const targetDate = new Date("2025-01-14T00:00:00");
+            const currentTime = new Date();
+            const diff = targetDate - currentTime;
+
+            if (diff <= 0) {
+                countdownElement.textContent = "Happy Birthday! 🎉";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        celebrateBtn.onclick = function () {
+            videoSection.style.display = "block";
+            videoSection.scrollIntoView({ behavior: "smooth" });
+        };
+    </script>
+</body>
+</html>

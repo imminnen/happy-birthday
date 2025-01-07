@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #232526, #414345); /* Original gradient restored */
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+
+        /* Gift Emoji Styling */
+        .gift-emoji {
+            font-size: 5rem;
+            animation: bounce 1.5s infinite ease-in-out;
+            cursor: pointer;
+            pointer-events: none; /* Disable clicking initially */
+        }
+
+        /* Surprise Text Styling */
+        .surprise-text {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffdde1;
+            animation: fade 1s infinite alternate;
+        }
+
+        /* Bounce Animation */
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Fade Animation */
+        @keyframes fade {
+            from {
+                opacity: 0.5;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Button Style */
+        .button {
+            margin-top: 30px;
+            background-color: #ff5c8d;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(255, 92, 141, 0.5);
+        }
+
+        .button:hover {
+            background-color: #ff3d66;
+            box-shadow: 0 8px 20px rgba(255, 92, 141, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <!-- Gift Emoji -->
+    <div>
+        <div class="gift-emoji" onclick="openGift()">🎁</div>
+        <div class="surprise-text" id="surprise-text"></div>
+    </div>
+
+    <!-- Starry Sparkle Sound -->
+    <audio id="gift-sound" src="https://freesound.org/data/previews/444/444137_855163-lq.mp3" preload="auto"></audio>
+
+    <script>
+        // Surprise texts array
+        const surpriseTexts = [
+            "What's inside this gift? 🤔",
+            "Could it be something special? 🎉",
+            "A little surprise awaits for Piu! 🎁", // Updated text
+            "Click the gift box to reveal the magic! ✨",
+        ];
+
+        let textIndex = 0;
+
+        // Function to update the surprise text every 3 seconds
+        function updateSurpriseText() {
+            const surpriseTextElement = document.getElementById('surprise-text');
+            surpriseTextElement.textContent = surpriseTexts[textIndex];
+            textIndex = (textIndex + 1) % surpriseTexts.length; // Loop back to the first text
+
+            // After the last text, enable the gift emoji to be clickable
+            if (textIndex === 0) {
+                document.querySelector('.gift-emoji').style.pointerEvents = 'auto'; // Enable clicking
+            }
+        }
+
+        setInterval(updateSurpriseText, 3000); // Update every 3 seconds
+
+        // Redirect to the birthday page after sound plays
+        function openGift() {
+            const sound = document.getElementById('gift-sound');
+            sound.play(); // Play sound effect
+
+            setTimeout(() => {
+                window.location.href = "birthday.html"; // Redirect after 1.5 seconds to sync with the sound
+            }, 1500);
+        }
+
+        // Initialize the first text immediately
+        updateSurpriseText();
+    </script>
+</body>
+</html>
